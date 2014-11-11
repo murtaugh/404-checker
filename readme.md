@@ -13,11 +13,12 @@
 	<li>On hovering over a link, we use PHP and AJAX to reach out and grab the headers for the URL in question.</li>
 </ol>
 
-<p>Two things:</p>
+<p>A few things:</p>
 
 <ol>
 	<li>It would be better if the initial link scan is limited to areas of the page known to contain possibly questionable links. There's no sense in scanning links in areas of the page we know to contain good links.</li>
 	<li>In theory we <em>could</em> preemptively scan all the links, instead of on hover. This is certainly easier from a programming standpoint, but possibly not so good from a UX and resources standpoint, as we'll be making a bunch of (possibly unneeded) HTTP requests.</li>
+	<li>Right now the script only checks for 404s and pages that don't resolve at all. There a lot of other HTTP statuses we could be checking for.</li>
 </ol>
 
 <p>If we go with the on-demand approach, we need to decide what to do.</p>
