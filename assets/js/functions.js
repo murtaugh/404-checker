@@ -13,12 +13,16 @@
 	/* trigger when page is ready */
 	$(document).ready(function (){
 		
-		$('html').on('mouseover', 'a[data-checkedhttpstatus!="true"]', function(e) {
+		// try to identify internal links and skip them
+		// credit: http://css-tricks.com/snippets/jquery/target-only-external-links/
+		$('a').filter(function() {
+			return this.hostname && this.hostname !== location.hostname;
+		}).addClass("external");
+		
+		// test links that are external, and haven't already been checked
+		$('html').on('mouseover', 'a.external[data-checkedhttpstatus!="true"]', function(e) {
 			
 			thisLink = $(this);
-			
-			// see if we have already successfully found a Wayback URL
-			//var attr = thisLink.attr('data-waybackurl');
 			
 			checkURL = $(this).attr('href');
 			
@@ -37,7 +41,6 @@
 						    jsonp: "callback",
 						    dataType: "jsonp",
 						 
-						    // work with the response
 						    success: function(data) {
 							    // get the closest snaopshot from wayback JSON
 						        console.log(data.archived_snapshots.closest.url);
