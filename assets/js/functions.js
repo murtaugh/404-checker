@@ -26,54 +26,71 @@
 			
 			checkURL = $(this).attr('href');
 			
-			$.ajax({ url: 'http-check.php',
-				data: {url: checkURL},
-				type: 'post',
-				success: function(output) {
-					console.log('link is ' + output);
-					
-					if (output == '404') {
-						
-						// check to see if wayback has a version
-						$.ajax({
-						    url: 'https://archive.org/wayback/available?url='+checkURL,
-						    jsonp: "callback",
-						    dataType: "jsonp",
-						 
-						    success: function(data) {
-							    // get the closest snaopshot from wayback JSON
-						        console.log(data.archived_snapshots.closest.url);
-						        thisLink.attr('data-waybackurl', data.archived_snapshots.closest.url);
-						        thisLink.attr('data-checkedhttpstatus', 'true');
-						    }
-						});
-						
-					} else {
-						
-						console.log('continue normally');
-						
-						thisLink.attr('data-checkedhttpstatus', 'true');
-						
-					}
-					
-				}
-			});
+			checkHTTPcode(thisLink, checkURL);
 			
 		});
 	
 	});
 	
-	
-	/* optional triggers
-	
-	$(window).load(function() {
+	function checkHTTPcode(whichLink, whichURL) {
 		
-	});
-	
-	$(window).resize(function() {
+		$.ajax({ url: 'http-check.php',
+			data: {url: whichURL},
+			type: 'post',
+			success: function(output) {
+				
+				console.log('link is ' + output);
+							
+				whichLink.attr('data-checkedhttpstatus', 'true');
+				
+				if (output == '404') {
+					
+					// call the wayback API to see if there's a snapshot
+					$.ajax({
+					    url: 'https://archive.org/wayback/available?url='+checkURL,
+					    jsonp: "callback",
+					    dataType: "jsonp",
+					 
+					    success: function(data) {
+						    
+						    // check the size of wayback's array
+						    Object.size = function(obj) {
+							    var size = 0, key;
+							    for (key in obj) {
+							        if (obj.hasOwnProperty(key)) size++;
+							    }
+							    return size;
+							};
+						    
+						    var waybackSuccess = Object.size(data.archived_snapshots);
+						    
+						    // check if Wayback returned no snapshot values
+						    if (waybackSuccess == 0) {
+								
+								// no result
+								console.log('no snapshot');
+								
+							} else {
+						    
+						    	// got a result from wayback
+					        	console.log(data.archived_snapshots.closest.url);
+					        
+								whichLink.attr('data-waybackurl', data.archived_snapshots.closest.url);
+								
+							}
+							
+					    }
+					});
+					
+				} else {
+					
+					console.log('continue normally');
+					
+				}
+				
+			}
+		});	
 		
-	});
-	
-	*/
+	};
 
 })(window.jQuery);
