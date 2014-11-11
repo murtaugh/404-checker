@@ -1,19 +1,3 @@
-<!doctype html>
-
-<html class="no-js" lang="en">
-
-<head>
-
-	<meta charset="utf-8">
-
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	
-	<title>404 Checker</title>
-
-</head>
-
-<body>
-
 <h1>404 Checker</h1>
 
 <p>So, I had an idea (<a href="https://twitter.com/murtaugh/status/532003907913121792">https://twitter.com/murtaugh/status/532003907913121792</a>), and I had a moment to work on it, so here it is!</p>
@@ -43,31 +27,4 @@
 	<li>It's possible we've been able to flag the link as 404, but don't have a result from the Wayback API yet yet. So do we capture the click, make a note of it, then push the user to the snapshot URL when it comes in, assuming it will come in a timely manner? If not, what?</li>
 </ol>
 
-<p>Anyway, here's the 404 Checker in action.</p>
-
 <p>Please note: I have not, but intend to, see how things work on touch devices. We'll likely need a different approach to the link events.</p>
-
-<h2>Examples</h2>
-
-<p>Hover over the links and watch the fake console for results.</p>
-
-<ul>
-	<li>This link is internal and won't be checked: <a href="/">/</a></li>
-	<li>This link does not return a 404: <a href="http://waxy.org/2006/03/litigation_cosb/">http://waxy.org/2006/03/litigation_cosb/</a></li>
-	<li>This link returns a 404 and has a Wayback snapshot: <a href="http://www.channel101.com/articles/article.php?article_id=70">http://www.channel101.com/articles/article.php?article_id=70</a></li>
-	<li>This link returns a 404 and does <em>not</em> have a Wayback snapshot: <a href="http://alistaport.com">http://alistaport.com</a></li>
-</ul>
-
-<hr>
-
-<p>
-	A fake console:<br>
-	<textarea id="fake-console" style="width: 80%; height: 200px; font-size: 1em;"></textarea>
-</p>
-
-
-<script src="assets/js/libs/jquery-1.11.0.min.js"></script>
-<script src="assets/js/functions.js"></script>
-  
-</body>
-</html>

@@ -32,6 +32,13 @@
 	
 	});
 	
+	function fakeConsole(text) {
+		
+		$('#fake-console').append(text + '\n');
+		console.log(text);
+		
+	};
+	
 	function checkHTTPcode(whichLink, whichURL) {
 		
 		$.ajax({ url: 'http-check.php',
@@ -39,7 +46,7 @@
 			type: 'post',
 			success: function(output) {
 				
-				console.log('link is ' + output);
+				fakeConsole('link is ' + output);
 							
 				whichLink.attr('data-checkedhttpstatus', 'true');
 				
@@ -68,12 +75,12 @@
 						    if (waybackSuccess == 0) {
 								
 								// no result
-								console.log('no snapshot');
+								fakeConsole('no snapshot');
 								
 							} else {
 						    
 						    	// got a result from wayback
-					        	console.log(data.archived_snapshots.closest.url);
+					        	fakeConsole(data.archived_snapshots.closest.url);
 					        
 								whichLink.attr('data-waybackurl', data.archived_snapshots.closest.url);
 								
@@ -84,7 +91,7 @@
 					
 				} else {
 					
-					console.log('continue normally');
+					fakeConsole('continue normally');
 					
 				}
 				
