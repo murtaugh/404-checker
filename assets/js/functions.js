@@ -17,7 +17,7 @@
 		// credit: http://css-tricks.com/snippets/jquery/target-only-external-links/
 		$('a').filter(function() {
 			return this.hostname && this.hostname !== location.hostname;
-		}).addClass("external");
+		}).addClass('external');
 		
 		// test links that are external, and haven't already been checked
 		$('html').on('mouseover', 'a.external[data-checkedhttpstatus!="true"]', function(e) {
@@ -34,8 +34,7 @@
 					
 					if (output == '404') {
 						
-						console.log('check to see if wayback has a version');
-						
+						// check to see if wayback has a version
 						$.ajax({
 						    url: 'https://archive.org/wayback/available?url='+checkURL,
 						    jsonp: "callback",
