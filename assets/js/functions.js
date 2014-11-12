@@ -52,11 +52,10 @@
 					if (($('#pubdate').length != 0) && ($('#pubdate').attr('data-waybackpubdate'))) {
 						
 						var pubdate = $('#pubdate').attr('data-waybackpubdate');
-						fakeConsole(pubdate)
 						waybackCall = waybackAPI + 'url=' + checkURL + '&timestamp=' + pubdate;
 						
 					} else {
-						fakeConsole('no pubdate')
+
 						// otherwise just ask Wayback for the most recent snapshot
 						waybackCall = waybackAPI + '?url=' + checkURL;
 						
