@@ -45,9 +45,26 @@
 				
 				if (output == '404') {
 					
+					var waybackAPI = 'https://archive.org/wayback/available?';
+					
+					// look to see if the page has a pubdate. if yes, 
+					// use it to ask Wayback for a snapshot from that time
+					if (($('#pubdate').length != 0) && ($('#pubdate').attr('data-waybackpubdate'))) {
+						
+						var pubdate = $('#pubdate').attr('data-waybackpubdate');
+						fakeConsole(pubdate)
+						waybackCall = waybackAPI + 'url=' + checkURL + '&timestamp=' + pubdate;
+						
+					} else {
+						fakeConsole('no pubdate')
+						// otherwise just ask Wayback for the most recent snapshot
+						waybackCall = waybackAPI + '?url=' + checkURL;
+						
+					}
+					
 					// call the wayback API to see if there's a snapshot
 					$.ajax({
-					    url: 'https://archive.org/wayback/available?url='+checkURL,
+					    url: waybackCall,
 					    jsonp: "callback",
 					    dataType: "jsonp",
 					 
