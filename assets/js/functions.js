@@ -1,37 +1,30 @@
-// Browser detection for when you get desparate. A measure of last resort.
-// http://rog.ie/post/9089341529/html5boilerplatejs
-// sample CSS: html[data-useragent*='Chrome/13.0'] { ... }
-//
-// var b = document.documentElement;
-// b.setAttribute('data-useragent',  navigator.userAgent);
-// b.setAttribute('data-platform', navigator.platform);
-
-
-// remap jQuery to $
 (function($){
 
 	/* trigger when page is ready */
 	$(document).ready(function (){
 		
-		// try to identify internal links and skip them
+		// attempt to identify internal links so we can skip them
 		// credit: http://css-tricks.com/snippets/jquery/target-only-external-links/
 		$('a').filter(function() {
 			return this.hostname && this.hostname !== location.hostname;
 		}).addClass('external');
 		
-		// test links that are external, and haven't already been checked
+		// run a scan on links that are external, and haven't already been checked
+		// ideally this owuld be limited to portions of the page that we know 
+		// might contain old and broken links
 		$('html').on('mouseover', 'a.external[data-checkedhttpstatus!="true"]', function(e) {
 			
 			thisLink = $(this);
 			
-			checkURL = $(this).attr('href');
+			checkURL = thisLink.attr('href');
 			
-			checkHTTPcode(thisLink, checkURL);
+			the404checker(thisLink, checkURL);
 			
 		});
 	
 	});
 	
+	// for demo purposes
 	function fakeConsole(text) {
 		
 		$('#fake-console').append(text + '\n');
@@ -39,7 +32,7 @@
 		
 	};
 	
-	function checkHTTPcode(whichLink, whichURL) {
+	function the404checker(whichLink, whichURL) {
 		
 		$.ajax({ url: 'http-check.php',
 			data: {url: whichURL},
@@ -75,12 +68,12 @@
 						    if (waybackSuccess == 0) {
 								
 								// no result
-								fakeConsole('no snapshot');
+								fakeConsole('no Wayback snapshot\n------------');
 								
 							} else {
 						    
-						    	// got a result from wayback
-					        	fakeConsole(data.archived_snapshots.closest.url);
+								// got a result from wayback
+								fakeConsole('Wayback has a snapshot: ' + data.archived_snapshots.closest.url + '\n------------');
 					        
 								whichLink.attr('data-waybackurl', data.archived_snapshots.closest.url);
 								
@@ -91,7 +84,7 @@
 					
 				} else {
 					
-					fakeConsole('continue normally');
+					fakeConsole('continue normally\n------------');
 					
 				}
 				
