@@ -1,16 +1,15 @@
 <h1>404 Checker</h1>
 
-<p>So, I had an idea (<a href="https://twitter.com/murtaugh/status/532003907913121792">https://twitter.com/murtaugh/status/532003907913121792</a>), and I had a moment to work on it, so here it is!</p>
-
 <p>This tool sniffs out the HTTP status of links on your site, and if the page returns 404 (or if it returns no headers at all) it queries the Wayback Machine's API to see if a snapshot is available. If one is, we can then redirect users to the Wayback snapshot instead of a 404 page.</p>
 
 <h2>Best approach?</h2>
-
-<p>At the moment, the script goes through two steps:</p>
+	
+<p>At the moment, the script goes through three steps:</p>
 
 <ol>
 	<li>On `document.ready`, the links are scanned and external links are flagged.</li>
 	<li>On hovering over a link, we use PHP and AJAX to reach out and grab the headers for the URL in question.</li>
+	<li>If the page returns a 404 header, or doesn't return a heard at all, we query the Wayback machine to see if it has a snapshot.</li>
 </ol>
 
 <p>A few things:</p>

@@ -9,63 +9,75 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<title>404 Checker</title>
+	
+	<link rel="stylesheet" href="assets/css/normalize.css" />
+	<link rel="stylesheet" href="assets/css/style.css" />
 
 </head>
 
 <body>
 
-<h1>404 Checker</h1>
+<header id="sticky-header">
 
-<p>So, I had an idea (<a href="https://twitter.com/murtaugh/status/532003907913121792">https://twitter.com/murtaugh/status/532003907913121792</a>), and I had a moment to work on it, so here it is!</p>
+	<h1>404 Checker</h1>
+	<p>Use jQuery, PHP, and an archive.org API to check the HTTP status of a link and redirect to Wayback if it's 404.</p>
 
-<p>This tool sniffs out the HTTP status of links on your site, and if the page returns 404 (or if it returns no headers at all) it queries the Wayback Machine's API to see if a snapshot is available. If one is, we can then redirect users to the Wayback snapshot instead of a 404 page.</p>
+</header>
 
-<h2>Best approach?</h2>
+<div class="container">
+	
+	<p>This tool sniffs out the HTTP status of links on your site, and if the page returns 404 (or if it returns no headers at all) it queries the Wayback Machine's API to see if a snapshot is available. If one is, we can then redirect users to the Wayback snapshot instead of a 404 page.</p>
+	
+	<h2>Best approach?</h2>
+	
+	<p>At the moment, the script goes through three steps:</p>
+	
+	<ol>
+		<li>On `document.ready`, the links are scanned and external links are flagged.</li>
+		<li>On hovering over a link, we use PHP and AJAX to reach out and grab the headers for the URL in question.</li>
+		<li>If the page returns a 404 header, or doesn't return a header at all, we query the Wayback machine to see if it has a snapshot.</li>
+	</ol>
+	
+	<p>A few things:</p>
+	
+	<ol>
+		<li>It would be better if the initial link scan is limited to areas of the page known to contain possibly questionable links. There's no sense in scanning links in areas of the page we know to contain good links.</li>
+		<li>In theory we <em>could</em> preemptively scan all the links, instead of on hover. This is certainly easier from a programming standpoint, but possibly not so good from a UX and resources standpoint, as we'll be making a bunch of (possibly unneeded) HTTP requests.</li>
+		<li>Right now the script only checks for 404s and pages that don't resolve at all. There a lot of other HTTP statuses we could be checking for.</li>
+	</ol>
+	
+	<p>If we go with the on-demand approach, we need to decide what to do.</p>
+	
+	<ol>
+		<li>Do we try to replace the URL before the user clicks? Depending on how fast the HTTP check comes in, the user may click before we get a response.</li>
+		<li>It's possible we've been able to flag the link as 404, but don't have a result from the Wayback API yet yet. So do we capture the click, make a note of it, then push the user to the snapshot URL when it comes in, assuming it will come in a timely manner? If not, what?</li>
+	</ol>
+	
+	<p>Anyway, here's the 404 Checker in action.</p>
+	
+	<p>Please note: I have not, but intend to, see how things work on touch devices. We'll likely need a different approach to the link events.</p>
+	
+	<h2>Examples</h2>
+	
+	<p>Hover over the links and watch the console for results. (The checks only run once for each link.)</p>
+	
+	<ul>
+		<li>This link is internal and won't be checked: <a href="/">internal link</a></li>
+		<li>This link does not return a 404: <a href="http://waxy.org/2006/03/litigation_cosb/">http://waxy.org/2006/03/litigation_cosb/</a></li>
+		<li>This link returns a 404 and has a Wayback snapshot: <a href="http://www.channel101.com/articles/article.php?article_id=70">http://www.channel101.com/articles/article.php?article_id=70</a></li>
+		<li>This link returns a 404 and does <em>not</em> have a Wayback snapshot: <a href="http://alistaport.com">http://alistaport.com</a></li>
+	</ul>
+	
+	<hr>
+	
+	<p>
+		Console:<br>
+		<textarea id="fake-console" style="width: 100%; height: 200px; font-size: .8em; font-family: courier; padding: .5em;"></textarea>
+	</p>
 
-<p>At the moment, the script goes through two steps:</p>
+</div>
 
-<ol>
-	<li>On `document.ready`, the links are scanned and external links are flagged.</li>
-	<li>On hovering over a link, we use PHP and AJAX to reach out and grab the headers for the URL in question.</li>
-</ol>
-
-<p>A few things:</p>
-
-<ol>
-	<li>It would be better if the initial link scan is limited to areas of the page known to contain possibly questionable links. There's no sense in scanning links in areas of the page we know to contain good links.</li>
-	<li>In theory we <em>could</em> preemptively scan all the links, instead of on hover. This is certainly easier from a programming standpoint, but possibly not so good from a UX and resources standpoint, as we'll be making a bunch of (possibly unneeded) HTTP requests.</li>
-	<li>Right now the script only checks for 404s and pages that don't resolve at all. There a lot of other HTTP statuses we could be checking for.</li>
-</ol>
-
-<p>If we go with the on-demand approach, we need to decide what to do.</p>
-
-<ol>
-	<li>Do we try to replace the URL before the user clicks? Depending on how fast the HTTP check comes in, the user may click before we get a response.</li>
-	<li>It's possible we've been able to flag the link as 404, but don't have a result from the Wayback API yet yet. So do we capture the click, make a note of it, then push the user to the snapshot URL when it comes in, assuming it will come in a timely manner? If not, what?</li>
-</ol>
-
-<p>Anyway, here's the 404 Checker in action.</p>
-
-<p>Please note: I have not, but intend to, see how things work on touch devices. We'll likely need a different approach to the link events.</p>
-
-<h2>Examples</h2>
-
-<p>Hover over the links and watch the fake console for results.</p>
-
-<ul>
-	<li>This link is internal and won't be checked: <a href="/">/</a></li>
-	<li>This link does not return a 404: <a href="http://waxy.org/2006/03/litigation_cosb/">http://waxy.org/2006/03/litigation_cosb/</a></li>
-	<li>This link returns a 404 and has a Wayback snapshot: <a href="http://www.channel101.com/articles/article.php?article_id=70">http://www.channel101.com/articles/article.php?article_id=70</a></li>
-	<li>This link returns a 404 and does <em>not</em> have a Wayback snapshot: <a href="http://alistaport.com">http://alistaport.com</a></li>
-</ul>
-
-<hr>
-
-<p>
-	A fake console:<br>
-	<textarea id="fake-console" style="width: 80%; height: 200px; font-size: 1em;"></textarea>
-</p>
-
+<a href="https://github.com/murtaugh/404-checker"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 
 <script src="assets/js/libs/jquery-1.11.0.min.js"></script>
 <script src="assets/js/functions.js"></script>
