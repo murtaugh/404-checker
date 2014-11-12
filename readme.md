@@ -28,3 +28,5 @@
 </ol>
 
 <p>Please note: I have not, but intend to, see how things work on touch devices. We'll likely need a different approach to the link events.</p>
+
+<p>There's a demo over here: <a href="http://git.monkeydo.biz/404-checker/">http://git.monkeydo.biz/404-checker/</a>.</p>
