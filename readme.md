@@ -18,7 +18,7 @@
 	<li>It would be better if the initial link scan is limited to areas of the page known to contain possibly questionable links. There's no sense in scanning links in areas of the page we know to contain good links.</li>
 	<li>In theory we <em>could</em> preemptively scan all the links, instead of on hover. This is certainly easier from a programming standpoint, but possibly not so good from a UX and resources standpoint, as we'll be making a bunch of (possibly unneeded) HTTP requests.</li>
 	<li>Right now the script only checks for 404s and pages that don't resolve at all. There a lot of other HTTP statuses we could be checking for.</li>
-	<li>At the request of <a href="https://twitter.com/waxpancake/status/532597685191454720">@waxpancake</a>, this page has a fake pubdate of `20060303`, which the script is using to ask for a Wayback snapshot as close to this date as it will give us. If no pubdate is present (or if it's not in Wayback's preferred format: YYYYMMDD), Wayback will default to returning the most recent snapshot.</li>
+	<li>At the request of <a href="https://twitter.com/waxpancake/status/532597685191454720">@waxpancake</a>, the demo page has a fake pubdate of `20060303`, which the script is using to ask for a Wayback snapshot as close to this date as it will give us. If no pubdate is present (or if it's not in Wayback's preferred format: YYYYMMDD), Wayback will default to returning the most recent snapshot.</li>
 </ol>
 
 <p>If we go with the on-demand approach, we need to decide what to do.</p>
